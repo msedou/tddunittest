@@ -1,5 +1,6 @@
 package bookstoreadapplication.modelTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import bookstoreadapplication.model.Book;
@@ -38,6 +39,15 @@ public class ArrangedBookShelfByCriteriaSpec {
 				LocalDate.of(2004, Month.JUNE, 9));
 		mythicalManMonth = new Book("The Mythical Man-Month", 
 				"Frederick Phillips Brooks", LocalDate.of(1975, Month.JANUARY, 1));
+	}
+	
+	@Test 
+	@DisplayName("bokkShelf is arranged lexicographically by book title")
+	void bookShelfArrangedByUserProviderCriteria() {
+		shelf.add(effectiveJava, codeComplete, mythicalManMonth);
+		Comparator<Book> reversed = Comparator.<Book>naturalOrder().reversed();
+		List<Book> books = shelf.arrange(reversed);
+		assertThat(books).isSortedAccordingTo(reversed);
 	}
 	
 	@Test void bookShelfArragedByUserProvidedCriteria() {
